@@ -16,6 +16,20 @@ Ten small, readable three.js programs, from a spinning cube to a body you can pl
 | 09 | Paint marks: points on the body leave strokes in space (after Ghostcatching) |
 | ⇩ | Tutorial: one file you can double-click |
 
+## Online
+
+**https://languel.github.io/threejslessons/** is every lesson, running in your browser. The deploy workflow fetches the models while building (they are still not stored in the repository) and publishes them with the pages, so lessons 02 to 09 work there too, with the webcam, a Mediathèque film, or a recording.
+
+What GitHub Pages cannot do, and what to do instead:
+
+| | On Pages | To get it |
+|---|---|---|
+| Recording a take to `data/` | not possible (a static host cannot write files); the recorder downloads a file instead | clone and run `npm start`, where `serve.py` saves recordings |
+| Faster depth (lessons 03 to 05) | works, but single-threaded: Pages cannot send the `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers the multi-threaded wasm needs | clone and run `npm start`, or any server that sends them |
+| Webcam | works (Pages is HTTPS, which browsers require) | |
+| Opening a lesson by double-click (`file://`) | not applicable | use **⇩ html + models** in the code drawer to make a file that runs offline |
+| The studio's three.js boards | separate: they live in Artist–Model Studio | |
+
 ## Run
 
 ```

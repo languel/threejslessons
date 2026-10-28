@@ -1,7 +1,7 @@
 # Three.js for body and sound: series plan
 
 Pages are plain static HTML + ES modules; three.js (r186) is vendored in `vendor/`, so a lecture works offline.
-Serve with `python3 lessons/threejs/serve.py 5199` (static + saves recordings to `data/`). MediaPipe runtime and models (~35 MB, git-ignored): `lessons/threejs/fetch-mediapipe.sh`.
+Serve with `python3 serve.py 5199` (static + saves recordings to `data/`). MediaPipe runtime and models (~35 MB, git-ignored): `./fetch-mediapipe.sh`.
 
 Every demo lives in one navigable scene (OrbitControls) so the body, the sound and the marks share a space the audience can walk around.
 

@@ -1,0 +1,15 @@
+{
+  "name": "threejs-body-sound",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Three.js for body and sound: ten small lessons from a spinning cube to MediaPipe body tracking, depth, a laser harp, a body drum, Schlemmer costumes, Picasso one-line drawings and Ghostcatching-style paint marks.",
+  "scripts": {
+    "start": "python3 serve.py 5199",
+    "models": "sh fetch-mediapipe.sh",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.7"
+  }
+}

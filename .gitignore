@@ -2,3 +2,4 @@ vendor/mediapipe/wasm/
 vendor/mediapipe/models/
 vendor/depth/
 exports/
+node_modules/

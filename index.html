@@ -4,7 +4,7 @@
 <style>body{overflow:auto}.wrap{max-width:680px;margin:0 auto;padding:40px 20px}li{margin:6px 0}</style></head><body>
 <div class="wrap">
 <h1>Three.js for body and sound</h1>
-<p class="dim">Part of the Artist–Model Studio lessons. Every lesson page has the same numbered menu at its top: one click to any other.</p>
+<p class="dim">Every lesson page has the same numbered menu at its top: one click to any other.</p>
 <ol start="0">
 <li><a href="00-cube.html">A spinning cube</a> — the whole program</li>
 <li><a href="01-anatomy.html">Anatomy of a scene</a> — scene, camera, objects, materials, light</li>
@@ -20,8 +20,8 @@
 </ol>
 <h2>Models</h2>
 <p class="dim">No model files are stored in the repository. Lessons 02 and up need MediaPipe models; 03–05 also the depth model. Fetch them once (about 145 MB; after that nothing leaves your machine):</p>
-<pre id="cmd">npm run lessons:models</pre>
-<p class="dim">or <code>sh lessons/threejs/fetch-mediapipe.sh</code>. Or download the files yourself into the folders shown. A missing model shows a red dot; reload this page after fetching.</p>
+<pre id="cmd">npm run models</pre>
+<p class="dim">or <code>sh fetch-mediapipe.sh</code>. Or download the files yourself into the folders shown. A missing model shows a red dot; reload this page after fetching.</p>
 <ul id="models" style="list-style:none;padding:0"></ul>
 <script type="module">
 const M=[
@@ -34,7 +34,7 @@ const M=[
 const ul=document.getElementById('models');
 for(const [name,path,src,uses] of M){
   const li=document.createElement('li'); li.style.cssText='margin:8px 0;font-size:14px';
-  li.innerHTML=`<span style="color:#888">●</span> <b>${name}</b> <span class="dim">lessons ${uses}</span><br><span class="dim" style="font-size:12px">put at <code>lessons/threejs/${path}</code><br>from ${src}</span>`;
+  li.innerHTML=`<span style="color:#888">●</span> <b>${name}</b> <span class="dim">lessons ${uses}</span><br><span class="dim" style="font-size:12px">put at <code>${path}</code><br>from ${src}</span>`;
   ul.append(li);
   fetch(path,{method:'HEAD'}).then(r=>{li.firstChild.style.color=r.ok&&!(r.headers.get('content-type')||'').includes('html')?'#4caf50':'#e55';}).catch(()=>{li.firstChild.style.color='#e55';});
 }

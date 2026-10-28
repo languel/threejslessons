@@ -33,3 +33,5 @@ nav.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px} .lnav{display
 .split { position:relative; }
 .split:has(#mini:checked) { grid-template-columns:1fr; } .split:has(#mini:checked) > aside { display:none; } #mini:checked ~ .mini-show { display:block; }
 @media (max-width:760px) { .split:has(#mini:checked) { grid-template-rows:60vh; } }
+
+ul.src { padding-left:18px; font-size:13px; color:var(--dim); } ul.src li { margin:3px 0; }

@@ -1,6 +1,6 @@
 # Three.js for body and sound
 
-Ten small, readable three.js programs, from a spinning cube to a body you can play and paint with. Each page has the live scene, controls, the key code highlighted, and a code view of the whole commented source that exports to one HTML file.
+Ten small, readable three.js programs, from a spinning cube to a body you can play and paint with. Each page has the live scene, controls, the key code highlighted, and a code view of the whole commented source. It exports three ways (see `tutorial-export.html`): one HTML file with everything inside, a `.zip` of plain ES modules with an import map to a CDN, or, for a real project, npm and a bundler.
 
 | | |
 |---|---|
@@ -27,6 +27,10 @@ npm test           # the pure-logic modules (harp, body drum, motion, one-line, 
 No model files are stored in this repository. `npm run models` fetches them (`fetch-mediapipe.sh`); the index page lists each file, where it goes and where it comes from, with a dot for whether it is present. Lessons 00 and 01 need nothing. Everything runs on your machine; nothing leaves it. Any static server works if it sends `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` (the depth model is faster with them); `serve.py` does.
 
 three.js (r186) is vendored in `vendor/` so the pages run without a bundler or a network. `PLAN.md` holds the lesson conventions and the per-lesson findings.
+
+## Sources
+
+Webcam, public-domain films from the [Mediathèque](https://languel.github.io/mediatheque/), or recorded landmarks (no camera needed). Includes Demenÿ's « Je vous aime » (1891, a close-up of a face, for lesson 08) and a photograph of Hugo Ball in his cardboard costume (1916, for the costumes in lesson 07: the pose model cannot see a body inside a cylinder, so the picture comes with a pose written by hand).
 
 ## With Artist–Model Studio
 

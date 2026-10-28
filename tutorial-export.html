@@ -32,10 +32,14 @@ button.go{background:var(--accent);color:#000;border:0;border-radius:6px;padding
 <dt>gzip</dt><dd>Compression, like a zip file. We gzip before base64, which wins the size back (a 14 MB wasm file shrinks a lot).</dd>
 <dt>Blob URL</dt><dd>A temporary address, like <code>blob:null/3f2a…</code>, that points at data held in memory. Anything that wants a file path (a script, a model loader) can be given one.</dd>
 <dt>Import map</dt><dd>A table in the page that says what a bare name like <code>'three'</code> means: <code>"three": "./vendor/three.module.js"</code>.</dd>
+<dt>ES module (ESM)</dt><dd>The browser's own module system: <code>&lt;script type="module"&gt;</code> and <code>import … from …</code>, no bundler needed. The catch: the browser fetches each file over HTTP, so a page opened from <code>file://</code> cannot load them. It needs any web server (even <code>python3 -m http.server</code>).</dd>
+<dt>CDN</dt><dd>A public server for libraries. <code>cdn.jsdelivr.net</code>, <code>unpkg.com</code> and <code>esm.sh</code> all serve three.js, so a page can import it from a URL instead of carrying a copy.</dd>
+<dt>Node / npm</dt><dd><b>Node</b> runs JavaScript outside the browser; <b>npm</b> is its package installer. <code>npm install three</code> puts three.js in a <code>node_modules</code> folder, and tools like Vite and esbuild (which run on Node) read from there. Node is a tool for <i>building</i>; the finished page does not need it.</dd>
 <dt>Wasm</dt><dd>WebAssembly: compiled code the browser runs next to JavaScript. MediaPipe and the depth model ship a <code>.wasm</code> file.</dd>
 </dl>
 
 <h2>3 · Two ways to make the one file</h2>
+<p>First the single file, built two ways. (Section 3½ then compares it with the other two ways to ship: ES modules, and Node.)</p>
 <h3>A · A bundler (esbuild)</h3>
 <p>The standard way. One command turns the module tree into one script:</p>
 <pre>npx esbuild 01-anatomy.js --bundle --format=esm --outfile=bundle.js</pre>
@@ -51,6 +55,26 @@ button.go{background:var(--accent);color:#000;border:0;border-radius:6px;padding
 </div>
 <p>You can read all of it: open the drawer on this page and pick <i>Key ideas</i>. The cards "Collect every module", "Rewrite imports to blob URLs" and "Embed big files" are the real code.</p>
 
+<h2>3½ · Three ways to ship, and when to use which</h2>
+<p>The one-file export above is only one answer. You will meet three, and each trades something:</p>
+<table>
+<tr><th></th><th>What you hand over</th><th>three.js comes from</th><th>Opens by double-click?</th><th>Needs</th></tr>
+<tr><td><b>1 · One file</b></td><td><code>lesson.html</code></td><td>embedded in the file</td><td>yes</td><td>nothing; works offline</td></tr>
+<tr><td><b>2 · ES modules + import map</b></td><td>a folder: <code>index.html</code> and the <code>.js</code> files as you wrote them</td><td>a CDN, named in the import map</td><td>no: needs a web server</td><td>a server and internet (or a local copy of three.js)</td></tr>
+<tr><td><b>3 · Node + bundler</b></td><td>a project: <code>package.json</code> and <code>node_modules</code>; the build writes <code>dist/</code></td><td><code>npm install three</code>, then bundled</td><td>the build output, if you bundle to one file</td><td>Node, a build step</td></tr>
+</table>
+<h3>2 · ES modules and an import map</h3>
+<p>This is the smallest page that runs three.js, and the way most three.js examples are written:</p>
+<pre>&lt;script type="importmap"&gt;{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"}}&lt;/script&gt;
+&lt;script type="module" src="./src/main.js"&gt;&lt;/script&gt;</pre>
+<p>The import map is the whole trick: it tells the browser that <code>import * as THREE from 'three'</code> means that URL. Your <code>main.js</code> stays exactly as you wrote it, readable, one file per idea. There is nothing to build, so you can edit a file and refresh. Use it for <b>teaching, sketches, CodeSandbox, and pages you host yourself</b>.</p>
+<p>The <b>⇩ modules</b> button in each lesson's drawer makes exactly this: a <code>.zip</code> with <code>index.html</code>, the import map, every lesson file unchanged, and a README. Unzip, run <code>python3 -m http.server</code> in the folder, open <code>http://localhost:8000</code>. To use a different CDN or your own copy, change only the import map (for example <code>https://esm.sh/three@0.186.0</code>, or <code>./node_modules/three/build/three.module.js</code>).</p>
+<div class="box"><b>Pin the version.</b> The example above says <code>three@0.186.0</code>, not <code>@latest</code>. three.js changes between releases; a page that imports "latest" can break the day a new one ships. Pin it, and upgrade on purpose.</div>
+<h3>3 · Node, npm and a bundler</h3>
+<p>For a real project: <code>npm install three</code>, <code>import * as THREE from 'three'</code> works because the bundler finds it in <code>node_modules</code>, and <code>npx esbuild src/main.js --bundle --outfile=dist/app.js</code> (or Vite, <code>npm create vite@latest</code>) writes the file you publish. You get a lockfile (so everyone has the same version), tree-shaking (only the parts of three.js you use are kept, a much smaller file), TypeScript, and hot reload. The price is a toolchain to learn and keep up to date. Reach for it when a project grows past a handful of files or has to be fast to load.</p>
+<p><b>Rule of thumb:</b> learning or sharing a sketch, use <b>2</b>. Giving a friend something to double-click, or a performance with no network, use <b>1</b>. A project that will live for months, use <b>3</b>.</p>
+
 <h2>4 · What is inside, for real</h2>
 <p>Press the button to see what the export of lesson 04 would contain, measured now from your own copy of the lessons.</p>
 <p><button class="go" id="inspect">Inspect lesson 04's export</button></p>
@@ -60,6 +84,7 @@ button.go{background:var(--accent);color:#000;border:0;border-radius:6px;padding
 <table>
 <tr><th>Button</th><th>What is embedded</th><th>Runs by double-click?</th><th>Size</th></tr>
 <tr><td><b>⇩ html</b></td><td>The page, its code, three.js</td><td>Lessons 00 and 01: yes. Lessons 02 to 04 need the models next to the file, so they need a server.</td><td>about 2 MB</td></tr>
+<tr><td><b>⇩ modules</b></td><td>The page and every lesson file as separate files, with an import map to a CDN (a .zip)</td><td>No: unzip and serve with any static server. Models are not included.</td><td>under 0.3 MB</td></tr>
 <tr><td><b>⇩ html + models</b></td><td>All of the above and the model and wasm files, gzip then base64</td><td>Yes. Everything is inside.</td><td>40 to 60 MB</td></tr>
 </table>
 <p>The models are the reason: pose is 9 MB, hands and face 12 MB more, the depth model 27 MB, the runtimes 40 MB. We only embed what a lesson really uses.</p>

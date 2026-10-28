@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createTracker } from './lib/tracker.js';
 import { Body, Playback, JOINTS } from './lib/body.js';
 import { BodyView } from './lib/bodyview.js';
-import { MT, CLIPS } from './lib/clips.js';
+import { MT, CLIPS, playClip } from './lib/clips.js';
 
 // Lesson 02: MediaPipe landmarks as ordinary three.js objects. Sources -> frame -> Body -> BodyView.
 const $ = id => document.getElementById(id);
@@ -68,7 +68,7 @@ clipSel.onchange = async () => {
   if (!clipSel.value) return;
   try {
     await getTracker();
-    video.srcObject = null; video.src = MT + clipSel.value + '/proxy.webm'; await video.play();
+    await playClip(video, clipSel.value);
     useVideo(false); sourceName = clipSel.value; status('clip: ' + clipSel.selectedOptions[0].text);
   } catch (e) { status('clip: ' + e.message); }
 };

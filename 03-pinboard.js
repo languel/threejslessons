@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createTracker } from './lib/tracker.js';
 import { createDepth } from './lib/depth.js';
 import { Pinboard } from './lib/pinboard.js';
-import { MT, CLIPS } from './lib/clips.js';
+import { MT, CLIPS, playClip } from './lib/clips.js';
 
 // Lesson 03: a pin screen driven by a person mask and a depth map.
 const $ = id => document.getElementById(id), status = t => $('status').textContent = t;
@@ -41,7 +41,7 @@ const clipSel = $('clip'); clipSel.add(new Option('clip…', ''));
 for (const [n, id] of Object.entries(CLIPS)) clipSel.add(new Option(n, id));
 clipSel.onchange = async () => {
   if (!clipSel.value) return;
-  try { await load(); video.srcObject = null; video.src = MT + clipSel.value + '/proxy.webm'; await video.play(); start(false); status(clipSel.selectedOptions[0].text + ' · depth on ' + depthNet.device); }
+  try { await load(); await playClip(video, clipSel.value); start(false); status(clipSel.selectedOptions[0].text + ' · depth on ' + depthNet.device); }
   catch (e) { status('clip: ' + e.message); console.error(e); }
 };
 $('cols').oninput = e => { $('colso').textContent = e.target.value; board.build(+e.target.value); };

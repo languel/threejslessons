@@ -1,5 +1,5 @@
-:root { --bg:#14151a; --panel:#1c1e25; --ink:#e8e6e1; --dim:#8b8d96; --accent:#f2b84b; --line:#2c2f39; }
-@media (prefers-color-scheme: light) { :root { --bg:#f4f2ec; --panel:#fff; --ink:#1d1e22; --dim:#6b6d75; --accent:#b8650a; --line:#dcd9d0; } }
+:root { --bg:#14151a; --panel:#1c1e25; --ink:#e8e6e1; --dim:#8b8d96; --accent:#b9b4a6; --line:#2c2f39; }
+@media (prefers-color-scheme: light) { :root { --bg:#f4f2ec; --panel:#fff; --ink:#1d1e22; --dim:#6b6d75; --accent:#7d776b; --line:#dcd9d0; } }
 * { box-sizing:border-box; }
 html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system, system-ui, sans-serif; }
 .split { display:grid; grid-template-columns:var(--aw, minmax(320px, 440px)) 1fr; height:100%; }
@@ -35,3 +35,8 @@ nav.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px} .lnav{display
 @media (max-width:760px) { .split:has(#mini:checked) { grid-template-rows:60vh; } }
 
 ul.src { padding-left:18px; font-size:13px; color:var(--dim); } ul.src li { margin:3px 0; }
+
+/* quiet chrome: the buttons that frame the lesson fade to 10% until you point at them, and their ground is translucent */
+.mini-hide, .mini-show { opacity:.1; transition:opacity .2s; } .mini-hide:hover, .mini-show:hover, .mini-hide:focus-visible, .mini-show:focus-visible { opacity:1; }
+.mini-show { background:color-mix(in srgb,var(--panel) 35%, transparent); backdrop-filter:blur(4px); }
+@media (hover:none) { .mini-hide, .mini-show { opacity:.5; } }
